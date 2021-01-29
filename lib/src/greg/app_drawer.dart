@@ -14,7 +14,8 @@ class PageViewDrawer extends Drawer {
             semanticLabel: semanticLabel);
 
   @override
-  Widget child;
+  Widget child; // <--- Bad form to override a class field. Kinda hacky.
+  //               <--- Done just for demonstration purposes.
 
   static SetState _state;
 
@@ -213,11 +214,10 @@ class PageViewDrawer extends Drawer {
       itemBuilder = null;
 
       if (_controller) {
-//        _tempController?.dispose();
-
-        /// This is a hack! Don't replace the PageController
-        /// Merely supply different viewportFraction value
-        /// This was only for demonstration purposes.
+// <-----------        This is a hack! Don't replace the PageController
+// <-----------        Just change the viewportFraction value instead.
+// <-----------        NOT THE WHOLE PAGECONTROLLER! Must dispose! It's expensive!
+// <-----------        This was only for demonstration purposes.
         _tempController = PageController(
           initialPage: _initialPage.toInt(),
 //        keepPage: _keepPage,
@@ -228,7 +228,6 @@ class PageViewDrawer extends Drawer {
         controller = _tempController;
       } else {
         if (_tempController != null) {
- //         _tempController.dispose();
           _tempController = null;
         }
 
@@ -239,7 +238,6 @@ class PageViewDrawer extends Drawer {
         }
       }
     } else {
-
       _currentPageValue = controller?.page;
 
       if (_listener == null) {
