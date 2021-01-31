@@ -31,6 +31,8 @@ class PageViewDrawer extends Drawer {
   static ScrollPhysics physics = const ClampingScrollPhysics();
   static bool pageSnapping;
   static ValueChanged<int> onPageChanged;
+  static ValueChanged<int> originalOnPageChanged;
+
   // No other Delegate to switch out and so this is not used.
   static SliverChildDelegate childrenDelegate;
   static DragStartBehavior dragStartBehavior;
@@ -255,9 +257,22 @@ class PageViewDrawer extends Drawer {
     pageSnapping = _pageSnapping;
 
     if (_onPageChanged) {
-      onPageChanged = (int value) {};
+      onPageChanged = (int value) {
+        final context = SetState?.lastContext;
+        if(context != null) {
+          Scaffold.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('You changed Pages! Yayyy!'),
+            ),
+          );
+        }
+        if (originalOnPageChanged != null) {
+          originalOnPageChanged(value);
+        }
+      };
     } else {
       onPageChanged = null;
+      originalOnPageChanged = null;
     }
 
     if (_dragStartBehavior) {

@@ -130,6 +130,10 @@ class PageView extends m.PageView {
 
     pageSnapping = PageViewDrawer.pageSnapping ?? pageSnapping ?? true;
 
+    PageViewDrawer.originalOnPageChanged = onPageChanged;
+
+    onPageChanged = PageViewDrawer.onPageChanged ?? onPageChanged;
+
     dragStartBehavior = PageViewDrawer.dragStartBehavior ??
         dragStartBehavior ??
         DragStartBehavior.start;
@@ -138,8 +142,7 @@ class PageView extends m.PageView {
         allowImplicitScrolling ??
         false;
 
-    clipBehavior =
-        PageViewDrawer.clipBehavior ?? clipBehavior ?? Clip.hardEdge;
+    clipBehavior = PageViewDrawer.clipBehavior ?? clipBehavior ?? Clip.hardEdge;
 
     // Record the current builder.
     PageViewDrawer.originalBuilder = itemBuilder;
@@ -156,4 +159,10 @@ class PageView extends m.PageView {
           PageViewDrawer.childrenDelegate ?? SliverChildListDelegate(children);
     }
   }
+
+  //
+  // static void dispose() {
+  //   // It takes up memory. Best to always dispose.
+  //   PageViewDrawer?.controller?.dispose();
+  // }
 }
